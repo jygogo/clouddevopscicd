@@ -18,7 +18,7 @@ pipeline {
 			steps {
 				withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]){
 					sh '''
-						sudo docker build -t jygogo/bgimage:blue .
+						docker build -t jygogo/bgimage:blue .
 					'''
 				}
 			}
@@ -28,8 +28,8 @@ pipeline {
 			steps {
 				withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]){
 					sh '''
-						sudo docker login -u $USERNAME -p $PASSWORD
-						sudo docker push jygogo/bgimage:blue
+						docker login -u $USERNAME -p $PASSWORD
+						docker push jygogo/bgimage:blue
 					'''
 				}
 			}
