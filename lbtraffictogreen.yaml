@@ -1,9 +1,9 @@
-apiVersion: v1
+apiVersion: apps/v1
 kind: Service
 metadata:
-  name: my-loadBalancer
+  name: my-loadbalancer
   labels:
-    app: my-loadBalancer
+    app: my-loadbalancer
 spec:
   selector:
     app: green
@@ -11,5 +11,4 @@ spec:
     - protocol: TCP
       port: 8080
       targetPort: 80
-  clusterIP: 10.100.0.1
   type: LoadBalancer
