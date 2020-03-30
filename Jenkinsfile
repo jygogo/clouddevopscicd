@@ -39,7 +39,7 @@ pipeline {
 			steps {
 				withAWS(region:'us-east-2', credentials:'aws-static') {
 					sh '''
-						kubectl config use-context arn:aws:eks:us-east-2:966330518435:cluster/myEKSCluster
+						/home/ubuntu/bin/kubectl config use-context arn:aws:eks:us-east-2:966330518435:cluster/myEKSCluster
 					'''
 				}
 			}
@@ -49,7 +49,7 @@ pipeline {
 			steps {
 				withAWS(region:'us-east-2', credentials:'aws-static') {
 					sh '''
-						kubectl apply -f bluedeployment.yaml
+						/home/ubuntu/bin/kubectl apply -f bluedeployment.yaml
 					'''
 				}
 			}
@@ -59,7 +59,7 @@ pipeline {
 			steps {
 				withAWS(region:'us-east-2', credentials:'aws-static') {
 					sh '''
-						kubectl apply -f lbtraffictoblue.yaml
+						/home/ubuntu/bin/kubectl apply -f lbtraffictoblue.yaml
 					'''
 				}
 			}
