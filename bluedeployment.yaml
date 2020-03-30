@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: blue-deployment
+  labels:
+    app: blue
+spec:
+  # modify replicas according to your case
+  replicas: 2
+  selector:
+    matchLabels:
+      app: blue
+  template:
+    metadata:
+      labels:
+        app: blue
+    spec:
+      containers:
+      - name: blue
+        image: docker.io/jygogo/bgimage:blue
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
