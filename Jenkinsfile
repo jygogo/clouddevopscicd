@@ -39,7 +39,7 @@ pipeline {
 			steps {
 				withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-static']]){
 					sh '''
-						/home/ubuntu/bin/kubectl apply -f bluedeployment.yaml
+						echo /home/ubuntu/bin/kubectl version
 					'''
 				}
 			}
