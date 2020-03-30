@@ -39,7 +39,7 @@ pipeline {
 			steps {
 				withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-static']]){
 					sh '''
-						/home/ubuntu/bin/kubectl version --kubeconfig /home/ubuntu/.kube/config
+						/home/ubuntu/bin/kubectl version --kubeconfig /var/lib/jenkins/.kube/config
 					'''
 				}
 			}
