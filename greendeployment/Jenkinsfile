@@ -8,7 +8,7 @@ pipeline {
 			}
 		}
 
-                 stage('Hadolint Dockerfile') {
+                stage('Hadolint Dockerfile') {
 			steps {
 				sh 'hadolint Dockerfile'
 			}
@@ -35,31 +35,21 @@ pipeline {
 			}
 		}
 
-		stage('Set kubectl context to use myEKSCluster') {
+		stage('Deploy green container') {
 			steps {
-				withAWS(region:'us-east-2', credentials:'aws-static') {
+				 withAWS(credentials: 'aws-static', region: 'us-east-2') {
 					sh '''
-						kubectl config use-context arn:aws:eks:us-east-2:966330518435:cluster/myEKSCluster
+						/home/ubuntu/bin/kubectl apply -f bluedeployment.yaml --kubeconfig /var/lib/jenkins/.kube/config
 					'''
 				}
 			}
 		}
 
-		stage('Deploy blue container') {
+		stage('Loadbalancer traffic to green') {
 			steps {
-				withAWS(region:'us-east-2', credentials:'aws-static') {
+				withAWS(credentials: 'aws-static', region: 'us-east-2') {
 					sh '''
-						kubectl apply -f greendeployment.yaml
-					'''
-				}
-			}
-		}
-
-		stage('Create loadbalancer service in the cluster, traffic to green') {
-			steps {
-				withAWS(region:'us-east-2', credentials:'aws_credentials') {
-					sh '''
-						kubectl apply -f lbtraffictogreen.yaml
+						/home/ubuntu/bin/kubectl apply -f lbtraffictoblue.yaml --kubeconfig /var/lib/jenkins/.kube/config
 					'''
 				}
 			}
