@@ -35,21 +35,11 @@ pipeline {
 			}
 		}
 
-		stage('Set kubectl context') {
-			steps {
-				withAWS(region:'us-east-2', credentials:'aws-static') {
-					sh '''
-						kubectl config use-context arn:aws:eks:us-east-2:966330518435:cluster/myEKSCluster
-					'''
-				}
-			}
-		}
-
 		stage('Deploy blue container') {
 			steps {
-				withAWS(region:'us-east-2', credentials:'aws-static') {
+				 withAWS(credentials: 'aws-static', region: 'us-east-2') {
 					sh '''
-						kubectl apply -f bluedeployment.yaml
+						/home/ubuntu/bin/kubectl apply -f bluedeployment.yaml --kubeconfig /var/lib/jenkins/.kube/config
 					'''
 				}
 			}
@@ -57,9 +47,9 @@ pipeline {
 
 		stage('Loadbalancer traffic to blue') {
 			steps {
-				withAWS(region:'us-east-2', credentials:'aws-static') {
+				withAWS(credentials: 'aws-static', region: 'us-east-2') {
 					sh '''
-						kubectl apply -f lbtraffictoblue.yaml
+						/home/ubuntu/bin/kubectl apply -f lbtraffictoblue.yaml --kubeconfig /var/lib/jenkins/.kube/config
 					'''
 				}
 			}
