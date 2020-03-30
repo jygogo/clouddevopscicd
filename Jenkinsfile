@@ -8,7 +8,7 @@ pipeline {
 			}
 		}
 
-                 stage('Hadolint Dockerfile') {
+                stage('Hadolint Dockerfile') {
 			steps {
 				sh 'hadolint Dockerfile'
 			}
@@ -18,7 +18,7 @@ pipeline {
 			steps {
 				withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]){
 					sh '''
-						sudo docker build -t jygogo/bgimage:green .
+						docker build -t jygogo/bgimage:green .
 					'''
 				}
 			}
@@ -28,38 +28,28 @@ pipeline {
 			steps {
 				withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]){
 					sh '''
-						sudo docker login -u $USERNAME -p $PASSWORD
-						sudo docker push jygogo/bgimage:green
+						docker login -u $USERNAME -p $PASSWORD
+						docker push jygogo/bgimage:green
 					'''
 				}
 			}
 		}
 
-		stage('Set kubectl context to use myEKSCluster') {
+		stage('Deploy green container') {
 			steps {
-				withAWS(region:'us-east-2', credentials:'aws-static') {
+				 withAWS(credentials: 'aws-static', region: 'us-east-2') {
 					sh '''
-						kubectl config use-context arn:aws:eks:us-east-2:966330518435:cluster/myEKSCluster
+						/home/ubuntu/bin/kubectl apply -f greendeployment.yaml --kubeconfig /var/lib/jenkins/.kube/config
 					'''
 				}
 			}
 		}
 
-		stage('Deploy blue container') {
+		stage('Loadbalancer traffic to green') {
 			steps {
-				withAWS(region:'us-east-2', credentials:'aws-static') {
+				withAWS(credentials: 'aws-static', region: 'us-east-2') {
 					sh '''
-						kubectl apply -f greendeployment.yaml
-					'''
-				}
-			}
-		}
-
-		stage('Create loadbalancer service in the cluster, traffic to green') {
-			steps {
-				withAWS(region:'us-east-2', credentials:'aws_credentials') {
-					sh '''
-						kubectl apply -f lbtraffictogreen.yaml
+						/home/ubuntu/bin/kubectl apply -f lbtraffictogreen.yaml --kubeconfig /var/lib/jenkins/.kube/config
 					'''
 				}
 			}
