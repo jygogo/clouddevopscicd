@@ -39,7 +39,7 @@ pipeline {
 			steps {
 				withAWS(region:'us-east-2', credentials:'aws-static') {
 					sh '''
-						/home/ubuntu/bin/kubectl config use-context arn:aws:eks:us-east-2:966330518435:cluster/myEKSCluster
+						/home/ubuntu/bin/kubectl config use-context jenkins@myEKSCluster.us-east-2.eksctl.io
 					'''
 				}
 			}
