@@ -11,5 +11,4 @@ spec:
     - protocol: TCP
       port: 8080
       targetPort: 80
-  clusterIP: 10.100.0.1
   type: LoadBalancer
