@@ -37,7 +37,7 @@ pipeline {
 
 		stage('Deploy blue container') {
 			steps {
-				withAWS(credentials: 'aws-static', endpointUrl: 'https://49611FFCD950BE63378E56B3902F791B.gr7.us-east-2.eks.amazonaws.com', region: 'us-east-2) {
+				withAWS(credentials: 'aws-static', endpointUrl: 'https://49611FFCD950BE63378E56B3902F791B.gr7.us-east-2.eks.amazonaws.com', region: 'us-east-2') {
 					sh '''
 						/home/ubuntu/bin/kubectl apply -f bluedeployment.yaml
 					'''
@@ -47,7 +47,7 @@ pipeline {
 
 		stage('Loadbalancer traffic to blue') {
 			steps {
-				withAWS(credentials: 'aws-static', endpointUrl: 'https://49611FFCD950BE63378E56B3902F791B.gr7.us-east-2.eks.amazonaws.com', region: 'us-east-2) {
+				withAWS(credentials: 'aws-static', endpointUrl: 'https://49611FFCD950BE63378E56B3902F791B.gr7.us-east-2.eks.amazonaws.com', region: 'us-east-2') {
 					sh '''
 						/home/ubuntu/bin/kubectl apply -f lbtraffictoblue.yaml
 					'''
