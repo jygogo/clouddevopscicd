@@ -8,7 +8,7 @@ pipeline {
 			}
 		}
 
-        stage('Hadolint Dockerfile') {
+                stage('Hadolint Dockerfile') {
 			steps {
 				sh 'hadolint Dockerfile'
 			}
@@ -35,7 +35,7 @@ pipeline {
 			}
 		}
 
-		stage('Set kubectl context to use myEKSCluster') {
+		stage('Set kubectl context') {
 			steps {
 				withAWS(region:'us-east-2', credentials:'aws-static') {
 					sh '''
@@ -55,9 +55,9 @@ pipeline {
 			}
 		}
 
-		stage('Create loadbalancer service in the cluster, traffic to blue') {
+		stage('Loadbalancer traffic to blue') {
 			steps {
-				withAWS(region:'us-east-2', credentials:'aws_credentials') {
+				withAWS(region:'us-east-2', credentials:'aws-static') {
 					sh '''
 						kubectl apply -f lbtraffictoblue.yaml
 					'''
