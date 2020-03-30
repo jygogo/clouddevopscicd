@@ -35,16 +35,6 @@ pipeline {
 			}
 		}
 
-		stage('Set kubectl context') {
-			steps {
-				withAWS(region:'us-east-2', credentials:'aws-static') {
-					sh '''
-						/home/ubuntu/bin/kubectl config use-context jenkins@myEKSCluster.us-east-2.eksctl.io
-					'''
-				}
-			}
-		}
-
 		stage('Deploy blue container') {
 			steps {
 				withAWS(region:'us-east-2', credentials:'aws-static') {
