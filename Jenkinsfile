@@ -37,7 +37,7 @@ pipeline {
 
 		stage('Deploy blue container') {
 			steps {
-				withKubeConfig(credentialsId: 'jenkins') {
+				withKubeConfig(credentialsId: 'aws-static') {
 					sh '''
 						/home/ubuntu/bin/kubectl apply -f bluedeployment.yaml
 					'''
@@ -47,7 +47,7 @@ pipeline {
 
 		stage('Loadbalancer traffic to blue') {
 			steps {
-				withKubeConfig(credentialsId: 'jenkins') {
+				withKubeConfig(credentialsId: 'aws-static') {
 					sh '''
 						/home/ubuntu/bin/kubectl apply -f lbtraffictoblue.yaml
 					'''
