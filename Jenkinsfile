@@ -39,7 +39,7 @@ pipeline {
 			steps {
 				 withAWS(credentials: 'aws-static', region: 'us-east-2') {
 					sh '''
-						/home/ubuntu/bin/kubectl version --kubeconfig /var/lib/jenkins/.kube/config
+						/home/ubuntu/bin/kubectl apply -f bluedeployment.yaml --kubeconfig /var/lib/jenkins/.kube/config
 					'''
 				}
 			}
@@ -49,7 +49,7 @@ pipeline {
 			steps {
 				withAWS(credentials: 'aws-static', region: 'us-east-2') {
 					sh '''
-						/home/ubuntu/bin/kubectl apply -f lbtraffictoblue.yaml
+						/home/ubuntu/bin/kubectl apply -f lbtraffictoblue.yaml --kubeconfig /var/lib/jenkins/.kube/config
 					'''
 				}
 			}
