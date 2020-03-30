@@ -37,7 +37,7 @@ pipeline {
 
 		stage('Deploy blue container') {
 			steps {
-				withKubeConfig([credentialsId:'aws-static', serverUrl: 'https://49611FFCD950BE63378E56B3902F791B.gr7.us-east-2.eks.amazonaws.com', clusterName: 'myEKSCluster']) {
+				withKubeConfig([credentialsId:'jenkins@myEKSCluster.us-east-2.eksctl.io', serverUrl: 'https://49611FFCD950BE63378E56B3902F791B.gr7.us-east-2.eks.amazonaws.com', clusterName: 'myEKSCluster']) {
 					sh '''
 						/home/ubuntu/bin/kubectl apply -f bluedeployment.yaml
 					'''
@@ -47,7 +47,7 @@ pipeline {
 
 		stage('Loadbalancer traffic to blue') {
 			steps {
-				withKubeConfig([credentialsId:'aws-static', serverUrl: 'https://49611FFCD950BE63378E56B3902F791B.gr7.us-east-2.eks.amazonaws.com', clusterName: 'myEKSCluster']) {
+				withKubeConfig([credentialsId:'jenkins@myEKSCluster.us-east-2.eksctl.io', serverUrl: 'https://49611FFCD950BE63378E56B3902F791B.gr7.us-east-2.eks.amazonaws.com', clusterName: 'myEKSCluster']) {
 					sh '''
 						/home/ubuntu/bin/kubectl apply -f lbtraffictoblue.yaml
 					'''
